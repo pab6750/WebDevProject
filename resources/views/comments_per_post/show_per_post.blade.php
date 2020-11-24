@@ -3,6 +3,9 @@
 @section('title', 'Comments')
 
 @section('content')
+  <div class="pb-3 pl-3">
+    <a class="btn btn-dark" href="{{ route('comments.create', ['post_id' => $post_id]) }}">Post Comment</a>
+  </div>
   @foreach($comments as $comment)
     <div class="card" style="width: 18rem;">
       <div class="card-body">

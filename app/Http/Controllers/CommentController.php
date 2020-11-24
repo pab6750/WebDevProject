@@ -26,9 +26,9 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($post_id)
     {
-        //
+        return view('comments.create', ['post_id' => $post_id]);
     }
 
     /**
@@ -37,9 +37,24 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($user_id, $post_id, Request $request)
     {
-        //
+
+        $validatedData = $request->validate([
+          'description' => 'required|max:512'
+        ]);
+
+        $comment = new Comment;
+
+        $comment->description = $validatedData['description'];
+        $comment->post_id = $post_id;
+        $comment->user_id = $user_id;
+
+        $comment->save();
+
+        session()->flash('message', 'Comment posted successfully');
+
+        return $this->show_per_post($post_id);
     }
 
     /**
@@ -63,7 +78,7 @@ class CommentController extends Controller
     {
       $comments = Post::findOrFail($post_id)->comments;
 
-      return view('comments_per_post.show_per_post', ['comments' => $comments]);
+      return view('comments_per_post.show_per_post', ['comments' => $comments, 'post_id' => $post_id]);
     }
 
     /**

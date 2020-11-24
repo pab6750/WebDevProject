@@ -30,7 +30,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -41,7 +41,24 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      dd($request['title']);
+      dd($request['image']);
+
+      $validatedData = $request->validate([
+        'title' => 'required|max:256',
+        'image' => 'required'
+      ]);
+
+      $post = new Post;
+
+      $post->title = $validatedData['title'];
+      $post->image = $validatedData['image'];
+
+      $post->save();
+
+      session()->flash('message', 'Post created successfully');
+
+      return redirect()->route('posts.index');
     }
 
     /**
