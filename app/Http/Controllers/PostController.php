@@ -39,13 +39,13 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($user_id, Request $request)
     {
-      dd($request['title']);
-      dd($request['image']);
+      //dd($request['title']);
+      //dd($request['image']);
 
       $validatedData = $request->validate([
-        'title' => 'required|max:256',
+        'title' => 'required|max:512',
         'image' => 'required'
       ]);
 
@@ -53,12 +53,13 @@ class PostController extends Controller
 
       $post->title = $validatedData['title'];
       $post->image = $validatedData['image'];
+      $post->user_id = $user_id;
 
       $post->save();
 
       session()->flash('message', 'Post created successfully');
 
-      return redirect()->route('posts.index');
+      return $this->show_per_user($user_id);
     }
 
     /**

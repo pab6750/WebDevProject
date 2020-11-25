@@ -53,7 +53,7 @@ Route::get('user_pages', [UserPageController::class, 'index']);
 Route::get('post/{id}', [PostController::class, 'show']);
 Route::get('posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
-Route::post('posts/store', [PostController::class, 'store'])->name('posts.store');
+Route::post('posts/store/user/{user_id}', [PostController::class, 'store'])->name('posts.store');
 Route::get('posts_per_user/{user_id}', [PostController::class, 'show_per_user']);
 
 Route::get('comments', [CommentController::class, 'index'])->name('comments.index');
