@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserPage;
+use App\Http\Controllers\PostController;
 
 class UserController extends Controller
 {
@@ -82,8 +84,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($user_id)
     {
-        //
+      //Auth::logout();
+
+      $user = User::findOrFail($user_id);
+      //$user_page = UserPage::findOrFail($user->user_page->id);
+
+      $user->delete();
+      //$user_page->delete();
+
+      return view('homepage');
     }
 }

@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\UserPage;
 
-class UserPageTableSeeder extends Seeder
+class ImageTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +14,5 @@ class UserPageTableSeeder extends Seeder
     public function run()
     {
         //
-        UserPage::factory()->times(51)->create();
     }
 }

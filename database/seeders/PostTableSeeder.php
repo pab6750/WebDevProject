@@ -27,6 +27,18 @@ class PostTableSeeder extends Seeder
             //each post has at least one tag
             $tagId = Tag::inRandomOrder()->first()->id;
             $p[$i]->tags()->attach($tagId);
+
+            $possible_images = ['map1.jpg',
+                                'map2.jpg',
+                                'map3.jpg',
+                                'map4.jpg',
+                                'map5.jpg',
+                                'map6.jpg',
+                                'map7.jpg',
+                                'map8.jpg',];
+            shuffle($possible_images);
+            $p[$i]->image()->create(['filename' => $possible_images[0]]);
+
         }
     }
 }

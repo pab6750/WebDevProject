@@ -9,6 +9,11 @@ class Post extends Model
 {
     use HasFactory;
 
+    public function image()
+    {
+      return $this->morphOne('App\Models\Image', 'imageable');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\Models\User');

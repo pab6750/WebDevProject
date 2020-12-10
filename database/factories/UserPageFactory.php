@@ -29,7 +29,7 @@ class UserPageFactory extends Factory
         return [
             //
             'profile_picture' => 'default_profile_pic.jpg',
-            'description' => 'description',
+            'description' => $this->faker->sentence,
             'user_id' => $this->highestIndex
         ];
     }

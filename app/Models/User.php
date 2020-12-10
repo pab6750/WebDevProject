@@ -41,6 +41,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function image()
+    {
+      return $this->morphOne('App\Models\Image', 'imageable');
+    }
+
     public function posts()
     {
       return $this->hasMany('App\Models\Post');
@@ -53,6 +58,6 @@ class User extends Authenticatable
 
     public function user_page()
     {
-      return $this->hasOne('App\Models\Comment');
+      return $this->hasOne('App\Models\UserPage');
     }
 }

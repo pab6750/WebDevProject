@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'New Post')
+@section('title', 'Update Post')
 
 @section('content')
-  <form class="pl-4" method="POST" action="{{ route('posts.store', ['user_id' => Auth::user()->id]) }}" style="padding-right: 50rem;">
+  <form class="pl-4" method="POST" action="{{ route('posts.update', ['post_id' => $post_id]) }}" style="padding-right: 50rem;">
     @csrf
     <div class="form-group">
       <label for="title">Title Post</label>
@@ -21,7 +21,7 @@
       </select>
     </div>
     <div class="pt-3">
-      <button type="submit" class="btn btn-dark">Post</button>
+      <button type="submit" class="btn btn-dark">Edit</button>
     </div>
   </form>
 @endsection

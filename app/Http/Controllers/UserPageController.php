@@ -59,9 +59,9 @@ class UserPageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($user_page_id)
     {
-        //
+      return view('user_page.edit', ['user_page_id' => $user_page_id]);
     }
 
     /**
@@ -71,9 +71,25 @@ class UserPageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($user_page_id, Request $request)
     {
-        //
+      $user_page = UserPage::findOrFail($user_page_id);
+
+      $validatedData = $request->validate([
+        'username' => 'required|max:256',
+        'profile_pic' => 'required'
+      ]);
+
+      $user_page->user->name = $validatedData['username'];
+
+      $user_page->save();
+
+      $user_page->user->image()->delete();
+      $user_page->user->image()->create(['filename' => $validatedData['profile_pic']]);
+
+      session()->flash('message', 'User edited successfully');
+
+      return $this->show($user_page_id);
     }
 
     /**
@@ -82,7 +98,7 @@ class UserPageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($user_page_id)
     {
         //
     }

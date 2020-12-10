@@ -9,6 +9,9 @@
 
     <title>D&D Maps</title>
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/v4-shims.css">
+
     <style>
       .button_list {
         padding-right: 1rem;
@@ -17,6 +20,26 @@
       .centre_div {
         margin: 0 auto;
         width: 60%
+      }
+
+      .map_tag_color {
+        background-color: #0066cc;
+      }
+
+      .character_tag_color {
+        background-color: #009933;
+      }
+
+      .default_tag_color {
+        background-color: #cc0000;
+      }
+
+      .link_color {
+        color: #6b00b3 !important;
+      }
+
+      .inline_info {
+        display:inline-block;
       }
     </style>
 
@@ -63,17 +86,31 @@
                             @endif
                         @else
                             <li class="nav-item dropdown">
+                              <a href="#" class="nav-link dropdown-toggle" id="notificationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="fas fa-bell"></i></a>
+                              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationsDropdown">
+                                <?php $notifications = Auth::user()->unreadNotifications;?>
+                                @foreach ($notifications as $notification)
+                                  <a class="dropdown-item">
+                                    {{ $notification->data['message'] }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </a>
+                                @endforeach
+                              </div>
+                            </li>
+                            <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="{{ url('/user_page/'.Auth::user()->id) }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                  <a href="{{ url('user_page', ['id' => Auth::user()->id]) }}" class="dropdown-item">Profile</a>
-                                  <a href="{{ route('posts.create') }}" class="dropdown-item">Add Post</a>
+                                  <a href="{{ url('user_page', ['id' => Auth::user()->user_page->id]) }}" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+                                  <a href="{{ route('posts.create') }}" class="dropdown-item"><i class="fas fa-plus"></i> Add Post</a>
                                   <a class="dropdown-item" href="{{ route('logout') }}"
                                      onclick="event.preventDefault();
                                                    document.getElementById('logout-form').submit();">
-                                      {{ __('Logout') }}
+                                      <i class="fas fa-sign-out-alt"></i> {{ __('Logout') }}
                                   </a>
 
                                   <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

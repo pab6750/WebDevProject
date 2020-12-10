@@ -98,9 +98,9 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($comment_id)
     {
-        //
+        return view('comments.edit', ['comment_id' => $comment_id]);
     }
 
     /**
@@ -110,9 +110,22 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($comment_id, Request $request)
     {
-        //
+        $comment = Comment::findOrFail($comment_id);
+
+        $validatedData = $request->validate([
+          'description' => 'required|max:512'
+        ]);
+
+        $comment->description = $validatedData['description'];
+        $comment->edited = 1;
+
+        $comment->save();
+
+        session()->flash('message', 'Comment edited successfully');
+
+        return $this->show_per_user($comment->user_id);
     }
 
     /**
@@ -121,8 +134,11 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($comment_id)
     {
-        //
+        $comment = Comment::findOrFail($comment_id);
+        $comment->delete();
+
+        return $this->show_per_user($comment->user_id);
     }
 }

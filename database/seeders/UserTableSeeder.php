@@ -19,6 +19,7 @@ class UserTableSeeder extends Seeder
         $u = new User;
 
         $u->name = "admin";
+        $u->isAdmin = 1;
         $u->email = "admin@email.com";
         $u->email_verified_at = now();
         $u->password = Hash::make('password');
@@ -27,5 +28,23 @@ class UserTableSeeder extends Seeder
         $u->save();
 
         User::factory()->times(50)->create();
+
+        $users = User::get();
+
+        for($i = 0; $i < 51; $i++)
+        {
+
+          $possible_images = ['default_profile_pic.jpg',
+                             'profile_picture1.jpg',
+                             'profile_picture2.jpg',
+                             'profile_picture3.jpg',
+                             'profile_picture4.jpg',
+                             'profile_picture5.jpg',
+                             'profile_picture6.jpg',
+                             'profile_picture7.jpg',
+                             'profile_picture8.jpg',];
+            shuffle($possible_images);
+            $users[$i]->image()->create(['filename' => $possible_images[0]]);
+        }
     }
 }

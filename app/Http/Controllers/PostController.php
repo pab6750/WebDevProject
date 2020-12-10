@@ -16,8 +16,6 @@ class PostController extends Controller
      */
     public function index()
     {
-        //$posts = Post::all();
-        //$posts = DB::table('posts')->paginate(10);
         $posts = Post::paginate(10);
 
         return view('posts.index', ['posts' => $posts]);
@@ -46,16 +44,20 @@ class PostController extends Controller
 
       $validatedData = $request->validate([
         'title' => 'required|max:512',
-        'image' => 'required'
+        'picture' => 'required',
+        'tag' => 'required'
       ]);
 
-      $post = new Post;
+      $last_id = Post::get()->last()->id;
 
+      $post = new Post;
       $post->title = $validatedData['title'];
-      $post->image = $validatedData['image'];
       $post->user_id = $user_id;
 
       $post->save();
+
+      $post->tags()->attach($validatedData['tag']);
+      $post->image()->create(['filename' => $validatedData['picture']]);
 
       session()->flash('message', 'Post created successfully');
 
@@ -77,7 +79,7 @@ class PostController extends Controller
 
     public function show_per_user($user_id)
     {
-      $posts = User::findOrFail($user_id)->posts;
+      $posts = User::findOrFail($user_id)->posts()->latest()->get();
 
       return view('posts_per_user.show_per_user', ['posts' => $posts]);
     }
@@ -88,9 +90,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($post_id)
     {
-        //
+        return view('posts.edit', ['post_id' => $post_id]);
     }
 
     /**
@@ -100,9 +102,29 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($post_id, Request $request)
     {
-        //
+        $post = Post::findOrFail($post_id);
+
+        $validatedData = $request->validate([
+          'title' => 'required|max:512',
+          'picture' => 'required',
+          'tag' => 'required'
+        ]);
+
+        $post->title = $validatedData['title'];
+        $post->edited = 1;
+
+        $post->save();
+
+        $post->tags()->detach();
+        $post->tags()->attach($validatedData['tag']);
+        $post->image()->delete();
+        $post->image()->create(['filename' => $validatedData['picture']]);
+
+        session()->flash('message', 'Post edited successfully');
+
+        return $this->show_per_user($post->user_id);
     }
 
     /**
@@ -111,8 +133,12 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($post_id)
     {
-        //
+      $post = Post::findOrFail($post_id);
+
+      $post->delete();
+
+      return $this->show_per_user($post->user_id);
     }
 }

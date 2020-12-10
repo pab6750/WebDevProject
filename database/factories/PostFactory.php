@@ -33,14 +33,6 @@ class PostFactory extends Factory
                                                     'Please comment to give me feedback',
                                                     'I wonder if P = NP',
                                                     'I am trapped in a laravel factory forced to seed tables forever. HELP ME']),
-            'image' => $this->faker->randomElement(['map1.jpg',
-                                                    'map2.jpg',
-                                                    'map3.jpg',
-                                                    'map4.jpg',
-                                                    'map5.jpg',
-                                                    'map6.jpg',
-                                                    'map7.jpg',
-                                                    'map8.jpg',]),
             'user_id' => User::inRandomOrder()->first()->id
          ];
     }
