@@ -9,9 +9,12 @@ class Image extends Model
 {
     use HasFactory;
 
-    
+
     protected $guarded = [];
 
+    /**
+    * Returns the model for this image.
+    */
     public function imageable()
     {
       return $this->morphTo();

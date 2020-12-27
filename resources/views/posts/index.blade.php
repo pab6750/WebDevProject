@@ -21,6 +21,7 @@
           <p class="card-text">Posted by <a class = "text-dark" href="{{ url('user_page', ['id' => $post->user->id]) }}">{{ $post->user->name }}</a></p>
           <div class="row pl-3">
             <a href="{{ url('comments_per_post', ['post_id' => $post->id]) }}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Comments</a>
+            <!-- Actions dropdown appears only if user is authorised -->
             @if(Gate::allows('update-post', $post))
               <div class="dropdown pl-2">
                 <button class="btn btn-secondary btn-lg dropdown-toggle active" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all comments.
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,7 +22,7 @@ class CommentController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new comment.
      *
      * @return \Illuminate\Http\Response
      */
@@ -32,7 +32,7 @@ class CommentController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created comment in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -40,6 +40,7 @@ class CommentController extends Controller
     public function store($user_id, $post_id, Request $request)
     {
 
+        //data validation
         $validatedData = $request->validate([
           'description' => 'required|max:512'
         ]);
@@ -52,13 +53,11 @@ class CommentController extends Controller
 
         $comment->save();
 
-        session()->flash('message', 'Comment posted successfully');
-
         return $this->show_per_post($post_id);
     }
 
     /**
-     * Display the specified resource.
+     * Display one specific comment.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -93,7 +92,7 @@ class CommentController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified comment.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -104,7 +103,7 @@ class CommentController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in comment.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -129,7 +128,7 @@ class CommentController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified comment from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -140,5 +139,57 @@ class CommentController extends Controller
         $comment->delete();
 
         return $this->show_per_user($comment->user_id);
+    }
+
+    /**
+    * returns a list containing all the comments for a post.
+    *
+    */
+    public function api_show_per_post($post_id)
+    {
+        $comments = Post::findOrFail($post_id)->comments;
+        return $comments;
+    }
+
+    /**
+    * Saves a newly created comment into storage.
+    *
+    */
+    public function api_store($user_id, $post_id, Request $request)
+    {
+
+        $comment = new Comment;
+
+        $validatedData = $request->validate([
+          'description' => 'required|max:256'
+        ]);
+
+        $comment->description = $validatedData['description'];
+        $comment->post_id = $post_id;
+        $comment->user_id = $user_id;
+
+        $comment->save();
+
+        session()->flash('message', 'Comment posted successfully');
+
+        return $comment;
+    }
+
+    /**
+    * returns a list containing all the authors of the comments for a post.
+    *
+    */
+    public function api_get_authors($post_id)
+    {
+        $comments = Post::findOrFail($post_id)->comments;
+
+        $authors = array();
+
+        for($i = 0; $i < count($comments); $i++)
+        {
+          $authors[] = $comments[$i]->user;
+        }
+
+        return $authors;
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('comments_per_post/{post_id}', [CommentController::class, 'api_show_per_post'])->name('api.comments_per_post');
+Route::post('comments/store/user/{user_id}/post/{post_id}', [CommentController::class, 'api_store'])->name('api.comments.store');
+Route::post('comments/authors/{post_id}', [CommentController::class, 'api_get_authors'])->name('api.comments.get_authors');

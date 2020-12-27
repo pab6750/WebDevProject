@@ -41,21 +41,33 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+    * Returns the image for this user.
+    */
     public function image()
     {
       return $this->morphOne('App\Models\Image', 'imageable');
     }
 
+    /**
+    * Returns the posts for this user.
+    */
     public function posts()
     {
       return $this->hasMany('App\Models\Post');
     }
 
+    /**
+    * Returns the comments for this user.
+    */
     public function comments()
     {
       return $this->hasMany('App\Models\Comment');
     }
 
+    /**
+    * Returns the user page for this user.
+    */
     public function user_page()
     {
       return $this->hasOne('App\Models\UserPage');

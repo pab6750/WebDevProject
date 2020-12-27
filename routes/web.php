@@ -77,3 +77,7 @@ Route::get('comments/delete/{comment_id}', [CommentController::class, 'destroy']
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/ajaxtest', function() {
+  return view('ajaxtest');
+});

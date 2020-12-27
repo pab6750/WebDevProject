@@ -12,6 +12,7 @@
             <p class="card-text"><i>(Edited)</i></p>
           @endif
           <p class="card-text">{{ $comment->description }}</p>
+          <!-- Actions dropdown appears only if the user is authorised -->
           @if(Gate::allows('update-comment', $comment))
             <div class="dropdown">
               <button class="btn btn-secondary btn-lg dropdown-toggle active" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

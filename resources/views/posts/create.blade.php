@@ -13,12 +13,13 @@
       <label for="picture">Image File</label>
       <input type="file" class="form-control-file" name="picture" id="picture">
     </div>
-    <div>
-      <select class="custom-select mr-sm-2" id="tag" name="tag">
-        <option selected>Select Tag</option>
-        <option value="1">Map</option>
-        <option value="2">Character</option>
-      </select>
+    <div class="form-check form-check-inline pt-1">
+      <input class="form-check-input" type="checkbox" id="tag_checkbox_1" name="tag_checkbox_1" value="1">
+      <label class="form-check-label" for="tag_checkbox_1">Map</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" id="tag_checkbox_2" name="tag_checkbox_2" value="2">
+      <label class="form-check-label" for="tag_checkbox_2">Character</label>
     </div>
     <div class="pt-3">
       <button type="submit" class="btn btn-dark">Post</button>

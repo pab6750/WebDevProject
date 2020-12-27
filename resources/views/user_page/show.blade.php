@@ -17,6 +17,7 @@
     <a class="btn btn-dark" href="{{ url('posts_per_user', ['user_id' => $user_page->user->id]) }}" role="button">Posts</a>
     <a class="btn btn-dark" href="{{ url('comments_per_user', ['user_id' => $user_page->user->id]) }}" role="button">Comments</a>
   </div>
+  <!-- Buttons to delete and edit appear only if user is authorised -->
   @if(Gate::allows('update-user_page', $user_page))
     <div class="pl-4 pt-4">
       <a class="btn btn-dark" href="{{ route('user_page.edit', ['user_page_id' => $user_page->id]) }}" role="button">Edit User</a>

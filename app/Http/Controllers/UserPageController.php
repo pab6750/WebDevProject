@@ -75,6 +75,7 @@ class UserPageController extends Controller
     {
       $user_page = UserPage::findOrFail($user_page_id);
 
+      //data validation
       $validatedData = $request->validate([
         'username' => 'required|max:256',
         'profile_pic' => 'required'

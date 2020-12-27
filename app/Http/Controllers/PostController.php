@@ -10,19 +10,20 @@ use Illuminate\Support\Facades\DB;
 class PostController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all posts.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
+        //function used to paginate the data.
         $posts = Post::paginate(10);
 
         return view('posts.index', ['posts' => $posts]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new post.
      *
      * @return \Illuminate\Http\Response
      */
@@ -32,20 +33,18 @@ class PostController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created post in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store($user_id, Request $request)
     {
-      //dd($request['title']);
-      //dd($request['image']);
 
+      //data validation
       $validatedData = $request->validate([
         'title' => 'required|max:512',
         'picture' => 'required',
-        'tag' => 'required'
       ]);
 
       $last_id = Post::get()->last()->id;
@@ -56,7 +55,16 @@ class PostController extends Controller
 
       $post->save();
 
-      $post->tags()->attach($validatedData['tag']);
+      if(!is_null($request['tag_checkbox_1']))
+      {
+        $post->tags()->attach($request['tag_checkbox_1']);
+      }
+
+      if(!is_null($request['tag_checkbox_2']))
+      {
+        $post->tags()->attach($request['tag_checkbox_2']);
+      }
+
       $post->image()->create(['filename' => $validatedData['picture']]);
 
       session()->flash('message', 'Post created successfully');
@@ -65,7 +73,7 @@ class PostController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified post.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -77,6 +85,10 @@ class PostController extends Controller
         return view('post.show', ['post' => $post]);
     }
 
+    /**
+    * Display all posts for a user.
+    *
+    */
     public function show_per_user($user_id)
     {
       $posts = User::findOrFail($user_id)->posts()->latest()->get();
@@ -109,7 +121,6 @@ class PostController extends Controller
         $validatedData = $request->validate([
           'title' => 'required|max:512',
           'picture' => 'required',
-          'tag' => 'required'
         ]);
 
         $post->title = $validatedData['title'];
@@ -118,7 +129,17 @@ class PostController extends Controller
         $post->save();
 
         $post->tags()->detach();
-        $post->tags()->attach($validatedData['tag']);
+
+        if(!is_null($request['tag_checkbox_1']))
+        {
+          $post->tags()->attach($request['tag_checkbox_1']);
+        }
+
+        if(!is_null($request['tag_checkbox_2']))
+        {
+          $post->tags()->attach($request['tag_checkbox_2']);
+        }
+        
         $post->image()->delete();
         $post->image()->create(['filename' => $validatedData['picture']]);
 
