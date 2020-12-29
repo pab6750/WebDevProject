@@ -70,17 +70,18 @@
       </div>
     @endforeach
     <br>
-    @guest
-    @else
-    <!-- Form to post a new comment -->
-    <div class="pl-3" id="root">
-      Post a new Comment:
-      <br>
-      <input type="text" id="input" v-model="newCommentDescription"></input>
-      <button v-on:click="createComment" class="btn btn-dark">Post</button>
-    </div>
-    @endguest
   @endif
+
+  @guest
+  @else
+  <!-- Form to post a new comment -->
+  <div class="pl-3" id="root">
+    Post a new Comment:
+    <br>
+    <input type="text" id="input" v-model="newCommentDescription"></input>
+    <button v-on:click="createComment" class="btn btn-dark">Post</button>
+  </div>
+  @endguest
 
   @if($isLoggedIn)
     <script type="application/javascript">
