@@ -139,7 +139,7 @@ class PostController extends Controller
         {
           $post->tags()->attach($request['tag_checkbox_2']);
         }
-        
+
         $post->image()->delete();
         $post->image()->create(['filename' => $validatedData['picture']]);
 
